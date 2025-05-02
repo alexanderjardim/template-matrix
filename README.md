@@ -1,6 +1,4 @@
 # template-matrix
-Template Matrix
-# template-matrix
 
 ## Description
 
