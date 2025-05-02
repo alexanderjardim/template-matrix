@@ -1,0 +1,12 @@
+title: "My Application"
+user:
+  role: "Admin"
+items:
+  - name: "Product 1"
+    price: 25.00
+  - name: "Product 2"
+    price: 50.00
+  - name: "Product 3"
+    price: 75.00
+show_message: true
+message_content: "This is a sample message."

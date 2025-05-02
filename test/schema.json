@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Configuration Schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "The title of the application"
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the user"
+          },
+          "role": {
+            "type": "string",
+            "description": "The role of the user"
+          }
+        },
+        "required": [
+          "name",
+          "role"
+        ],
+        "description": "Information about the user"
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the item"
+            },
+            "price": {
+              "type": "number",
+              "description": "The price of the item"
+            }
+          },
+          "required": [
+            "name",
+            "price"
+          ],
+          "description": "An item in the list"
+        },
+        "description": "A list of items"
+      },
+      "show_message": {
+        "type": "boolean",
+        "description": "Whether to show a message"
+      },
+      "message_content": {
+        "type": "string",
+        "description": "The content of the message"
+      }
+    },
+    "required": [
+      "title",
+      "user",
+      "items",
+      "show_message",
+      "message_content"
+    ]
+  }

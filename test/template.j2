@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.name }}!</h1>
+    <p>Your role is: {{ user.role }}</p>
+
+    <h2>Items:</h2>
+    <ul>
+    {% for item in items %}
+        <li>{{ item.name }} ({{ item.price }})</li>
+    {% endfor %}
+    </ul>
+
+    {% if show_message %}
+    <div class="message">
+        <p>{{ message_content }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>
