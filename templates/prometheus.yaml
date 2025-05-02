@@ -1,0 +1,38 @@
+prometheus_name: "my-prometheus"
+namespace: "monitoring"
+service_account_name: "prometheus"
+service_monitor_selector:
+  matchLabels:
+    release: "my-prometheus"
+rule_selector:
+  matchLabels:
+    role: "alert-rules"
+    release: "my-prometheus"
+replicas: 2
+retention: "15d"
+shards: 2
+memory_request: "4Gi"
+cpu_request: "2000m"
+memory_limit: "8Gi"
+cpu_limit: "4000m"
+default_args:
+  - "--config.file=/etc/prometheus/prometheus.yaml"
+  - "--web.enable-lifecycle"
+  - "--storage.tsdb.path=/prometheus"
+  - "--storage.tsdb.retention.time=15d"
+args:
+  - "--log.level=info"
+  - "--web.external-url=http://prometheus.example.com"
+thanos:
+  baseImage: "quay.io/thanos/thanos"
+  version: "v0.32.2"
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+  logLevel: "info"
+  args:
+    - "--sidecar.http-address=:10902"

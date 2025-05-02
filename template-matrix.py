@@ -122,6 +122,8 @@ def main():
     parser.add_argument('-template', required=True, help='Path to the Jinja2 template file')
     parser.add_argument('-config', required=True, help='Path to the JSON or YAML configuration file')
     parser.add_argument('-jsonschema', help='Path to the JSON schema file for validating the config (optional)')
+    parser.add_argument('-pretty_yaml', action='store_true', help='Output YAML with pretty formatting')
+
 
     if len(sys.argv) < 5:
         parser.print_help()
@@ -132,6 +134,7 @@ def main():
     template_file = args.template
     config_file = args.config
     schema_file = args.jsonschema
+    pretty_yaml = args.pretty_yaml  
 
     # Check file extensions.
     if not (template_file.endswith(".j2") or template_file.endswith(".jinja2")):
@@ -164,9 +167,12 @@ def main():
         # Render the template with the configuration
         output = template.render(config)
 
-        # Output the result to stdout
-        print(output)
-
+        # Format the output as YAML if requested
+        if pretty_yaml:
+            yaml_output = yaml.dump(yaml.safe_load(output), indent=2, sort_keys=False)
+            print(yaml_output)
+        else:
+            print(output) # Otherwise, print the raw output
     except (ValueError, FileNotFoundError, IOError, json.JSONDecodeError, yaml.YAMLError, ValidationError, Exception) as e:
         print(f"Error: {e}")
         sys.exit(1)

@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: {{ prometheus_name }}
+  namespace: {{ namespace }}
+spec:
+  serviceAccountName: {{ service_account_name }}
+  serviceMonitorSelector:
+    matchLabels:
+      {% for key, value in service_monitor_selector.matchLabels.items() %}
+      {{ key }}: {{ value }}
+      {% endfor %}
+  ruleSelector:
+    matchLabels:
+      {% for key, value in rule_selector.matchLabels.items() %}
+      {{ key }}: {{ value }}
+      {% endfor %}
+  replicas: {{ replicas }}
+  retention: {{ retention }}
+  {% if shards is defined and shards > 1 %}
+  shards: {{ shards }}
+  {% endif %}
+  resources:
+    requests:
+      memory: {{ memory_request }}
+      cpu: {{ cpu_request }}
+    limits:
+      memory: {{ memory_limit }}
+      cpu: {{ cpu_limit }}
+  args:
+    {% if default_args is defined %}
+      {% for arg in default_args %}
+        - "{{ arg }}"
+      {% endfor %}
+    {% endif %}
+    {% if args is defined %}
+      {% for arg in args %}
+        - "{{ arg }}"
+      {% endfor %}
+    {% endif %}
+  {% if thanos is defined %}
+  thanos:
+    baseImage: {{ thanos.baseImage }}
+    version: {{ thanos.version }}
+    resources:
+      requests:
+        memory: {{ thanos.resources.requests.memory }}
+        cpu: {{ thanos.resources.requests.cpu }}
+      limits:
+        memory: {{ thanos.resources.limits.memory }}
+        cpu: {{ thanos.resources.limits.cpu }}
+    args:
+      - "--log.level={{ thanos.logLevel }}"
+      - "--objstore.config-file=/etc/thanos/object-store.yaml"
+      {% if thanos.args is defined %}
+        {% for arg in thanos.args %}
+          - "{{ arg }}"
+        {% endfor %}
+      {% endif %}
+  {% endif %}
