@@ -123,6 +123,10 @@ def main():
     parser.add_argument('-config', required=True, help='Path to the JSON or YAML configuration file')
     parser.add_argument('-jsonschema', help='Path to the JSON schema file for validating the config (optional)')
 
+    if len(sys.argv) < 5:
+        parser.print_help()
+        sys.exit(1)
+
     args = parser.parse_args()
 
     template_file = args.template
